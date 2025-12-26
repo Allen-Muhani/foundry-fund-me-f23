@@ -79,6 +79,26 @@ contract FundMeTest is Test {
         );
     }
 
+        function testWithdrawCheaperWithASingleFunder() external funded {
+        // Arrange
+        uint256 startingOwnerBalance = i_fundMe.getOwner().balance;
+        uint256 startingFundMeBalance = address(i_fundMe).balance;
+
+        // Act
+        vm.prank(i_fundMe.getOwner());
+        i_fundMe.cheapWithdraw();
+
+        // Assert
+        uint256 endingOwnerBalance = i_fundMe.getOwner().balance;
+        uint256 endingFundMeBalance = address(i_fundMe).balance;
+
+        assertEq(endingFundMeBalance, 0);
+        assertEq(
+            startingFundMeBalance + startingOwnerBalance,
+            endingOwnerBalance
+        );
+    }
+
     function testWithdrawalFromMultipleFunders() public {
         // Arrange
         uint160 numberOfFunders = 10;
@@ -94,6 +114,34 @@ contract FundMeTest is Test {
         // Act
         vm.startPrank(i_fundMe.getOwner());
         i_fundMe.withdraw();
+        vm.stopPrank();
+
+        // Assert
+        uint256 endingFundMeBalance = address(i_fundMe).balance;
+
+        assertEq(endingFundMeBalance, 0);
+        assertEq(
+            startingFundMeBalance + startingOwnerBalance,
+            i_fundMe.getOwner().balance
+        );
+    }
+
+
+        function testCheaperWithdrawalFromMultipleFunders() public {
+        // Arrange
+        uint160 numberOfFunders = 10;
+
+        for (uint160 i = 1; i <= numberOfFunders; i++) {
+            hoax(address(i), SEND_VALUE);
+            i_fundMe.fund{value: SEND_VALUE}();
+        }
+
+        uint256 startingOwnerBalance = i_fundMe.getOwner().balance;
+        uint256 startingFundMeBalance = address(i_fundMe).balance;
+
+        // Act
+        vm.startPrank(i_fundMe.getOwner());
+        i_fundMe.cheapWithdraw();
         vm.stopPrank();
 
         // Assert
