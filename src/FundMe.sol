@@ -1,4 +1,4 @@
-// SPDX-Licence
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 // Note: The AggregatorV3Interface might be at a different location than what was in the video!
