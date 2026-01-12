@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-Licence
 pragma solidity ^0.8.18;
 
 // Note: The AggregatorV3Interface might be at a different location than what was in the video!
@@ -51,11 +51,15 @@ contract FundMe {
         s_funders = new address[](0);
  
         (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
-        require(callSuccess, "Call failed");
+                if (!callSuccess) {
+            revert FundMe__CallFailed();
+        }
+        
     }
 
     function cheapWithdraw() public onlyOwner {
-        for (uint256 funderIndex = 0; funderIndex < s_funders.length; funderIndex++) {
+        uint256 funderCount = s_funders.length;
+        for (uint256 funderIndex = 0; funderIndex < funderCount; funderIndex++) {
             address funder = s_funders[funderIndex];
             s_addressToAmountFunded[funder] = 0;
         }
@@ -69,8 +73,6 @@ contract FundMe {
         
     }
   
-  
-
     fallback() external payable {
         fund();
     }

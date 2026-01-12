@@ -1,7 +1,9 @@
 [profile.default]
 src = "src"
 out = "out"
+# solc = "^0.8.17"
 libs = ["lib"]
 remappings = ["@chainlink=lib/chainlink-brownie-contracts/"]
+ffi = true
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
