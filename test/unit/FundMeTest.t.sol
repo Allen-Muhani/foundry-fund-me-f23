@@ -73,13 +73,10 @@ contract FundMeTest is Test {
         uint256 endingFundMeBalance = address(i_fundMe).balance;
 
         assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            endingOwnerBalance
-        );
+        assertEq(startingFundMeBalance + startingOwnerBalance, endingOwnerBalance);
     }
 
-        function testWithdrawCheaperWithASingleFunder() external funded {
+    function testWithdrawCheaperWithASingleFunder() external funded {
         // Arrange
         uint256 startingOwnerBalance = i_fundMe.getOwner().balance;
         uint256 startingFundMeBalance = address(i_fundMe).balance;
@@ -93,10 +90,7 @@ contract FundMeTest is Test {
         uint256 endingFundMeBalance = address(i_fundMe).balance;
 
         assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            endingOwnerBalance
-        );
+        assertEq(startingFundMeBalance + startingOwnerBalance, endingOwnerBalance);
     }
 
     function testWithdrawalFromMultipleFunders() public {
@@ -120,14 +114,10 @@ contract FundMeTest is Test {
         uint256 endingFundMeBalance = address(i_fundMe).balance;
 
         assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            i_fundMe.getOwner().balance
-        );
+        assertEq(startingFundMeBalance + startingOwnerBalance, i_fundMe.getOwner().balance);
     }
 
-
-        function testCheaperWithdrawalFromMultipleFunders() public {
+    function testCheaperWithdrawalFromMultipleFunders() public {
         // Arrange
         uint160 numberOfFunders = 10;
 
@@ -148,9 +138,6 @@ contract FundMeTest is Test {
         uint256 endingFundMeBalance = address(i_fundMe).balance;
 
         assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            i_fundMe.getOwner().balance
-        );
+        assertEq(startingFundMeBalance + startingOwnerBalance, i_fundMe.getOwner().balance);
     }
 }
