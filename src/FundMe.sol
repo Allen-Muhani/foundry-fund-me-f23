@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+// https://youtu.be/sas02qSFZ74?t=7067
+
 // Note: The AggregatorV3Interface might be at a different location than what was in the video!
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import {PriceConverter} from "./PriceConverter.sol";
 
-
-error  FundMe__CallFailed();
+error FundMe__CallFailed();
 error FundMe__NotOwner();
 
 contract FundMe {
@@ -49,12 +50,11 @@ contract FundMe {
             s_addressToAmountFunded[funder] = 0;
         }
         s_funders = new address[](0);
- 
+
         (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
-                if (!callSuccess) {
+        if (!callSuccess) {
             revert FundMe__CallFailed();
         }
-        
     }
 
     function cheapWithdraw() public onlyOwner {
@@ -64,15 +64,14 @@ contract FundMe {
             s_addressToAmountFunded[funder] = 0;
         }
         s_funders = new address[](0);
- 
+
         (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         // require(callSuccess, "Call failed");
         if (!callSuccess) {
             revert FundMe__CallFailed();
         }
-        
     }
-  
+
     fallback() external payable {
         fund();
     }
@@ -83,14 +82,14 @@ contract FundMe {
 
     // View / Pure functions
     function getOwner() public view returns (address) {
-        return i_owner;    
+        return i_owner;
     }
 
-    function getAddressToAmountFunded(address fundingAddress) view public returns (uint256) {
-        return s_addressToAmountFunded[fundingAddress];     
+    function getAddressToAmountFunded(address fundingAddress) public view returns (uint256) {
+        return s_addressToAmountFunded[fundingAddress];
     }
 
-    function getFunder(uint256 index) view public returns (address) {
+    function getFunder(uint256 index) public view returns (address) {
         return s_funders[index];
     }
 }
