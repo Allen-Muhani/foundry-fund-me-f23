@@ -4,7 +4,7 @@ pragma solidity ^0.8.18;
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
-import {FundFundMe} from "../../script/Interactions.s.sol";
+import {FundFundMe, WithdrawFundMe} from "../../script/Interactions.s.sol";
 
 contract InterationsTest is Test {
     address USER = makeAddr("user");
@@ -21,9 +21,13 @@ contract InterationsTest is Test {
         vm.deal(USER, STARTING_BALANCE);
     }
 
-
-    function testUserCanFund() external {
+    function testUserCanFundInteractions() external {
         FundFundMe fundFundMe = new FundFundMe();
-        fundFundMe.fundFundMe(address(i_fundMe)); 
+        fundFundMe.fundFundMe(address(i_fundMe));
+
+        WithdrawFundMe withdrawFundMe = new WithdrawFundMe();
+        withdrawFundMe.withdrawFundMe(address(i_fundMe));
+
+        assertEq(address(i_fundMe).balance, 0);
     }
 }
